@@ -37,3 +37,10 @@ svm_accuracies <- sapply(svm_models, cv_accuracy,
                           test_data=test_data, test_labels=test_labels)
 accuracies <- rbind(accuracies,
                     data.frame(Classifier=svm_names, CV=svm_accuracies))
+
+# Tune the radial svm
+radial_svm_tuned_fit <- svm_tuned(train_data, test_data, test_labels)
+
+accuracies <- rbind(accuracies,
+                    data.frame(Classifier=c('Radial SVM tuned'),
+                      CV=c(cv_accuracy(radial_svm_tuned_fit, test_data, test_labels))))

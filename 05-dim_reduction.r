@@ -32,17 +32,16 @@ radial_svm_svd75_fit <- svm(as.factor(activity) ~ .,
                         method='C-classification', 
                         kernel='radial')
 
+print('Tuning cost parameter...')
+radial_svm_svd75_tuned_fit <- svm_tuned(reduced_train_data75,
+                                        reduced_test_data75, test_labels)
+
 accuracies <- rbind(accuracies,
-                    data.frame(Classifier='Radial SVM with 75% dim reduction',
-                    CV=cv_accuracy(radial_svm_svd75_fit, reduced_test_data75, test_labels))
+                    data.frame(
+                        Classifier=c('Radial SVM with 75% dim reduction', 
+                                        'Radial SVM with 75% dim reduction (tuned)'),
+                        CV=c(cv_accuracy(radial_svm_svd75_fit, reduced_test_data75, test_labels),
+                            cv_accuracy(radial_svm_svd75_tuned_fit, reduced_test_data75, test_labels)
+                            )
+                    )
                 )
-
-# Order classifiers by accuracy
-accuracies <- accuracies[order(-accuracies$CV),]
-print(accuracies)
-# So far, the radial SVM with dimension reduction has the best accuracy
-
-# Confusion matrix for the radial svm
-confusion_matrix <- table(test_labels, predict(radial_svm_svd50_fit, reduced_test_data50))
-print('Confusion matrix: ')
-print(confusion_matrix)

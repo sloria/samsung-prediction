@@ -21,6 +21,17 @@ train_class_proportions <- with(train_data,
                             )
 print("Class proportions (training set)")
 print(train_class_proportions)
+print("")
+
+validation_data <- subset(samsungData, subject %in% c(7,8,11,14))
+puts('# instances in validation set: ', nrow(validation_data))
+validation_class_proportions <- with(validation_data,
+                            sapply(unique(activity),
+                            function(x) sum(x==activity) / length(activity))
+                            )
+print("Class proportions (validation set)")
+print(validation_class_proportions)
+print("")
 
 # Subset test data
 test_data <- subset(samsungData, subject %in% c(27,28,29,30))
@@ -31,9 +42,11 @@ test_class_proportions <- with(test_data,
                             )
 print("Class proportions (test set)")
 print(test_class_proportions)
+print("")
 
 # The target labels
 train_labels <- train_data[, ncol(train_data)]
+validation_labels <- validation_data[, ncol(validation_data)]
 test_labels <- test_data[, ncol(train_data)]
 
 rm(samsungData)
