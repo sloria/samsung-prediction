@@ -2,7 +2,7 @@
 
 puts('# of columns in dataset: ', ncol(samsungData))
 print('Classes: ')
-print(unique(samsungData$activity)
+print(unique(samsungData$activity))
 class_proportions <- with(samsungData,
                     sapply(unique(activity), 
                     function(x) sum(x == activity) / length(activity))
@@ -31,3 +31,9 @@ test_class_proportions <- with(test_data,
                             )
 print("Class proportions (test set)")
 print(test_class_proportions)
+
+# The target labels
+train_labels <- train_data[, ncol(train_data)]
+test_labels <- test_data[, ncol(train_data)]
+
+rm(samsungData)
