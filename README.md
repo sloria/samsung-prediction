@@ -6,7 +6,7 @@ Here I attempt to use combine SVD for dimensionality reduction and SVM for class
 
 View my report [here](https://dl.dropbox.com/u/1693233/samsung-prediction-report.pdf).
 
-To reproduce the exact results presented in the report, run  `source('main.r')` from the R command line.
+To reproduce the exact analyses presented in the report, run  `source('00-download.r')` to get the dataset then `source('main.r')` from the R command line.
 
 ## Required packages
 - reshape
