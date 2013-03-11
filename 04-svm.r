@@ -4,25 +4,21 @@ require('e1071')
 print('## SVM ##')
 # Try different kernels
 print('Trying different kernels. . .')
-print('Radial. . .')
 radial_svm_fit <- svm(as.factor(activity) ~ ., 
                       data=train_data, 
                       method='C-classification', 
                       kernel='radial')
 
-print('Polynomial . . .')
 polynomial_svm_fit <- svm(as.factor(activity) ~ ., 
                       data=train_data, 
                       method='C-classification', 
                       kernel='polynomial')
 
-print('Linear. . .')
 linear_svm_fit <- svm(as.factor(activity) ~ ., 
                       data=train_data, 
                       method='C-classification', 
                       kernel='linear')
 
-print('Sigmoid. . .')
 sigmoid_svm_fit <- svm(as.factor(activity) ~ ., 
                       data=train_data, 
                       method='C-classification', 
@@ -34,13 +30,14 @@ svm_names <- c('Radial SVM', 'Polynomial SVM', 'Linear SVM', 'Sigmoid SVM')
 
 # Append the accuracies
 svm_accuracies <- sapply(svm_models, cv_accuracy, 
-                          test_data=test_data, test_labels=test_labels)
+                          test_data=validation_data, test_labels=validation_labels)
 accuracies <- rbind(accuracies,
                     data.frame(Classifier=svm_names, CV=svm_accuracies))
 
 # Tune the radial svm
-radial_svm_tuned_fit <- svm_tuned(train_data, test_data, test_labels)
+print('Tuning svm. . .')
+svm_tuned_fit <- svm_tuned(train_data, validation_data, kernel='linear', validation_labels)
 
 accuracies <- rbind(accuracies,
-                    data.frame(Classifier=c('Radial SVM tuned'),
-                      CV=c(cv_accuracy(radial_svm_tuned_fit, test_data, test_labels))))
+                    data.frame(Classifier=c('Linear SVM tuned'),
+                      CV=c(cv_accuracy(svm_tuned_fit, validation_data, validation_labels))))

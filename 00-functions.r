@@ -37,26 +37,23 @@ cv_accuracy <- function(fit, test_data, test_labels){
   return(mean(predictions == test_labels))
 }
 
-svm_tuned <- function(train_data, test_data, test_labels, range=2^(0:4)) {
+svm_tuned <- function(train_data, test_data, test_labels, kernel='radial', range=2^(0:4)) {
   require(e1071)
   # Returns a radial svm fit with the cost parameter tuned
-  puts('Trying C: ', range[1])
   best_svm <- svm(as.factor(activity) ~ .,
                     data=train_data,
                     method='C-classification',
-                    kernel='radial',
+                    kernel=kernel,
                     cost=range[1])
   best_accuracy <- cv_accuracy(best_svm, test_data, test_labels)
   puts('Accuracy: ', best_accuracy)
   for (c in range[2:length(range)]){
-    puts('Trying C: ', c)
     svm_fit <- svm(as.factor(activity) ~ .,
                     data=train_data,
                     method='C-classification',
-                    kernel='radial',
+                    kernel=kernel,
                     cost=c)
     accuracy <- cv_accuracy(svm_fit, test_data, test_labels)
-    puts('Accuracy: ', accuracy)
     if (accuracy > best_accuracy) {
       best_svm <- svm_fit
       best_accuracy <- accuracy
